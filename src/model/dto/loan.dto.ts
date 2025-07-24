@@ -5,7 +5,7 @@ export class LoanMovementResponseDto {
   typeId: number;
   amount: number;
   description: string;
-  date: string;
+  date: Date;
   evidenceUrl: string | null;
 
   static fromEntity(entity: LoanMovement): LoanMovementResponseDto {

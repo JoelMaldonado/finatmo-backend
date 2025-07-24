@@ -7,7 +7,6 @@ import {
   OneToMany,
 } from 'typeorm';
 import { Loan } from './loan.entity';
-import { LoanMovement } from './loan-movement.entity';
 
 @Entity('users')
 export class User {
@@ -31,9 +30,6 @@ export class User {
 
   @OneToMany(() => Loan, (loan) => loan.user)
   loans: Loan[];
-
-  @OneToMany(() => LoanMovement, (movement) => movement.user)
-  loanMovements: LoanMovement[];
 
   // Si usás transacciones:
   // @OneToMany(() => Transaction, (tx) => tx.user)

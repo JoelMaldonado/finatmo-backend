@@ -7,7 +7,6 @@ import {
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
-import { User } from './user.entity';
 import { Loan } from './loan.entity';
 import { LoanMovementType } from './loan-movement-type.entity';
 
@@ -20,10 +19,6 @@ export class LoanMovement {
   @JoinColumn({ name: 'loan_id' })
   loan: Loan;
 
-  @ManyToOne(() => User, (user) => user.loanMovements, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'user_id' })
-  user: User;
-
   @ManyToOne(() => LoanMovementType, { eager: true })
   @JoinColumn({ name: 'type_id' })
   type: LoanMovementType;
@@ -35,7 +30,7 @@ export class LoanMovement {
   description: string;
 
   @Column({ type: 'date' })
-  date: string;
+  date: Date;
 
   @Column({
     name: 'evidence_url',

@@ -33,6 +33,15 @@ export class LoanService {
     return listMap;
   }
 
+  async createLoan(userId: number, name: string, notes?: string) {
+    const item = this.loanRepository.create({
+      user: { id: userId },
+      name,
+      notes,
+    });
+    return await this.loanRepository.save(item);
+  }
+
   async findAllMovements(loanId: number, typeId?: number) {
     const movements = await this.loanMovementRepository.find({
       where: {
@@ -45,5 +54,23 @@ export class LoanService {
     });
 
     return movements;
+  }
+
+  async createMovement(
+    loanId: number,
+    typeId: number,
+    amount: number,
+    description?: string,
+    evidenceUrl?: string,
+  ) {
+    const item = this.loanMovementRepository.create({
+      loan: { id: loanId },
+      type: { id: typeId },
+      amount: amount,
+      description: description,
+      evidenceUrl: evidenceUrl,
+      date: new Date(),
+    });
+    return await this.loanMovementRepository.save(item);
   }
 }
