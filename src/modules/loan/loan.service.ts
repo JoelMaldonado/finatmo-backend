@@ -21,15 +21,32 @@ export class LoanService {
 
   async findAll(userId: number) {
     const loans = await this.loanRepository.find({
+      relations: [
+        'movements',
+        'movements.type',
+        'user'
+      ],
       where: {
         user: { id: userId },
       },
     });
-    const listMap = loans.map((loan) => ({
-      loanId: loan.id,
-      name: loan.name,
-      notes: loan.notes,
-    }));
+    const listMap = loans.map((loan) => {
+      const totalLoanAmount = loan.movements
+        .filter((m) => m.type.id === 1)
+        .reduce((sum, m) => sum + Number(m.amount), 0);
+
+      const totalPayments = loan.movements
+        .filter((m) => m.type.id === 2)
+        .reduce((sum, m) => sum + Number(m.amount), 0);
+
+      return {
+        loanId: loan.id,
+        name: loan.name,
+        notes: loan.notes,
+        totalLoanAmount: Number(totalLoanAmount),
+        totalPayments: Number(totalPayments),
+      };
+    });
     return listMap;
   }
 
